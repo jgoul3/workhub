@@ -21,14 +21,5 @@ public record CreateProjectRequest(
 
         LocalDate plannedStartDate,
         LocalDate plannedEndDate
-) {
-    public static CreateProjectRequest from(Project project) {
-        return new CreateProjectRequest(
-          project.getName(),
-          project.getDescription(),
-          project.getBudget(),
-          project.getPlannedStartDate(),
-          project.getPlannedEndDate()
-        );
-    }
-}
+) {}
+

@@ -36,19 +36,6 @@ public class Project {
 
     protected Project() {}
 
-    public Project(String name, String description, BigDecimal budget,
-                   LocalDate plannedStartDate, LocalDate plannedEndDate,
-                   LocalDate actualStartDate, LocalDate actualEndDate, ProjectStatus status) {
-        this.name = name;
-        this.description = description;
-        this.budget = budget;
-        this.plannedStartDate = plannedStartDate;
-        this.plannedEndDate = plannedEndDate;
-        this.actualStartDate = actualStartDate;
-        this.actualEndDate = actualEndDate;
-        this.status = status;
-    }
-
     public Project(String name, String description, BigDecimal budget, LocalDate plannedStartDate, LocalDate plannedEndDate) {
         this.name = name;
         this.description = description;
