@@ -40,14 +40,27 @@ public class Project {
         this.name = name;
         this.description = description;
         this.budget = budget;
+        this.status = ProjectStatus.PLANNING;
+        validatePlannedDates(plannedStartDate, plannedEndDate);
         this.plannedStartDate = plannedStartDate;
         this.plannedEndDate = plannedEndDate;
-        this.status = ProjectStatus.PLANNING;
     }
 
     @PrePersist
     void onCreate() {
         this.createdAt = Instant.now();
+    }
+
+    public void reschedule(LocalDate plannedStartDate, LocalDate plannedEndDate) {
+        validatePlannedDates(plannedStartDate, plannedEndDate);
+        this.plannedStartDate = plannedStartDate;
+        this.plannedEndDate = plannedEndDate;
+    }
+
+    private static void validatePlannedDates(LocalDate plannedStartDate, LocalDate plannedEndDate) {
+        if (plannedStartDate != null && plannedEndDate != null && plannedStartDate.isAfter(plannedEndDate)) {
+            throw new InvalidProjectDatesException(plannedStartDate, plannedEndDate);
+        }
     }
 
     //getters
@@ -66,8 +79,6 @@ public class Project {
     public void setName(String name) { this.name = name; }
     public void setDescription(String description) { this.description = description; }
     public void setBudget(BigDecimal budget) { this.budget = budget; }
-    public void setPlannedStartDate(LocalDate plannedStartDate) { this.plannedStartDate = plannedStartDate; }
-    public void setPlannedEndDate(LocalDate plannedEndDate) { this.plannedEndDate = plannedEndDate; }
     public void setActualStartDate(LocalDate actualStartDate) { this.actualStartDate = actualStartDate; }
     public void setActualEndDate(LocalDate actualEndDate) { this.actualEndDate = actualEndDate; }
     public void setStatus(ProjectStatus status) { this.status = status; }
