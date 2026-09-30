@@ -25,7 +25,7 @@ class ProjectTest {
     }
 
     @Test
-    void endDateNotBeforeStartDate() {
+    void constructorRejectsEndDateBeforeStartDate() {
 
         assertThatThrownBy(() -> projectWithDates(LocalDate.of(2026, 12, 1),
                 LocalDate.of(2026, 10, 15)))
@@ -50,7 +50,7 @@ class ProjectTest {
     }
 
     @Test
-    void nullNewEndDate() {
+    void constructorAllowsMissingStartDate() {
         Project project = projectWithDates(LocalDate.of(2026, 10, 1),
                 null);
 
@@ -66,7 +66,7 @@ class ProjectTest {
     }
 
     @Test
-    void updatedDates() {
+    void rescheduleUpdatesBothPlannedDates() {
 
         LocalDate newStart = LocalDate.of(2026, 11, 1);
         LocalDate newEnd = LocalDate.of(2027, 1, 15);
@@ -95,7 +95,7 @@ class ProjectTest {
     }
 
     @Test
-    void clearStartDate() {
+    void rescheduleCanClearStartDate() {
         Project project = projectWithDates(LocalDate.of(2026, 10, 1),
                 LocalDate.of(2026, 12, 15));
 
@@ -105,7 +105,7 @@ class ProjectTest {
     }
 
     @Test
-    void clearEndDate() {
+    void rescheduleCanClearEndDate() {
         Project project = projectWithDates(LocalDate.of(2026, 10, 1),
                 LocalDate.of(2026, 12, 15));
 
