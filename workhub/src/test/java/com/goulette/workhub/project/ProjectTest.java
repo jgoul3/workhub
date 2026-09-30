@@ -42,7 +42,7 @@ class ProjectTest {
     }
 
     @Test
-    void nullNewStartDate() {
+    void constructorAllowsMissingStartDate() {
         Project project = projectWithDates(null,
                 LocalDate.of(2026, 12, 15));
 
@@ -50,7 +50,7 @@ class ProjectTest {
     }
 
     @Test
-    void constructorAllowsMissingStartDate() {
+    void constructorAllowsMissingEndDate() {
         Project project = projectWithDates(LocalDate.of(2026, 10, 1),
                 null);
 
