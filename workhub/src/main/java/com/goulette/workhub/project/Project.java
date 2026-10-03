@@ -34,6 +34,7 @@ public class Project {
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 
+
     protected Project() {}
 
     public Project(String name, String description, BigDecimal budget, LocalDate plannedStartDate, LocalDate plannedEndDate) {
