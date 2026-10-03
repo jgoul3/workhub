@@ -12,6 +12,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -91,11 +93,12 @@ class ProjectControllerTest {
         when(projectService.findById(999L)).thenThrow(new ProjectNotFoundException(999L));
 
         mockMvc.perform(get("/api/projects/999"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.detail").value("Project 999 not found."));
     }
 
     @Test
-    void createReturns404WhenNameIsBlank() throws Exception {
+    void createReturns400WhenNameIsBlank() throws Exception {
 
         mockMvc.perform(post("/api/projects")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +111,8 @@ class ProjectControllerTest {
                           "plannedEndDate": "2026-12-15"
                         }
                         """))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.name").value("Name cannot be blank."));
 
         verify(projectService, never()).create(any());
     }
@@ -188,5 +192,15 @@ class ProjectControllerTest {
         mockMvc.perform(get("/api/projects"))
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void unexpectedErrorsReturn500() throws Exception {
+        when(projectService.findAll()).thenThrow(new RuntimeException("secret database details"));
+
+        mockMvc.perform(get("/api/projects"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(content().string(not(containsString("secret"))))
+                .andExpect(jsonPath("$.detail").value("An unexpected error occurred"));
     }
 }
