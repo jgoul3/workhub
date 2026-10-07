@@ -94,15 +94,29 @@ Errors are returned in the standard [Problem Details](https://www.rfc-editor.org
 
 ## Roadmap
 
+### Version 1
+
 - [x] Projects: create and read
 - [x] Unit and controller tests
 - [x] Centralized error handling
 - [x] Continuous integration
-- [ ] Projects: update and status transitions
+- [x] Project status workflow (planning, active, on hold, completed, canceled)
+- [ ] Projects: update and status-change endpoints
 - [ ] Tasks
+- [ ] RAID log (risks, assumptions, issues, dependencies)
+- [ ] Authentication and role-based access
+- [ ] Activity feed showing project changes over time
 - [ ] Expenses with an approval workflow
 - [ ] Budget summary and overspend warnings
-- [ ] Authentication and role-based access
 - [ ] React frontend
 - [ ] Docker and AWS deployment
 - [ ] AI-assisted features
+
+### Version 2
+
+- [ ] Comments on projects and tasks, with sanitized rich text
+- [ ] Request queue, with approved requests converted into projects
+- [ ] Project templates
+- [ ] Agile boards
+- [ ] Custom statuses for task boards
+- [ ] Custom fields and forms
