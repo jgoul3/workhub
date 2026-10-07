@@ -1,6 +1,7 @@
 package com.goulette.workhub.common;
 
 import com.goulette.workhub.project.InvalidProjectDatesException;
+import com.goulette.workhub.project.InvalidStatusTransitionException;
 import com.goulette.workhub.project.ProjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import com.goulette.workhub.project.ProjectNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -34,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetail problem = ex.getBody();
         problem.setTitle("Validation failed");
-        problem.setDetail("One or more fields are invalid");
+        problem.setDetail("One or more fields are invalid.");
         problem.setProperty("errors", errors);
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -52,6 +51,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleInvalidDates(InvalidProjectDatesException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problem.setTitle("Invalid project planned dates");
+
+        return problem;
+    }
+
+    @ExceptionHandler(InvalidStatusTransitionException.class)
+    public ProblemDetail handleInvalidStatusChange(InvalidStatusTransitionException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setTitle("Invalid project status change");
 
         return problem;
     }

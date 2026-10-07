@@ -64,6 +64,44 @@ public class Project {
         }
     }
 
+    public void start(LocalDate actualStartDate) {
+        if (status != ProjectStatus.PLANNING) {
+            throw new InvalidStatusTransitionException(status, ProjectStatus.ACTIVE);
+        }
+
+        this.actualStartDate = actualStartDate;
+        this.status = ProjectStatus.ACTIVE;
+    }
+
+    public void putOnHold() {
+        if (status != ProjectStatus.ACTIVE) {
+            throw new InvalidStatusTransitionException(status, ProjectStatus.ON_HOLD);
+        }
+        this.status = ProjectStatus.ON_HOLD;
+    }
+
+    public void resume() {
+        if (status != ProjectStatus.ON_HOLD) {
+            throw new InvalidStatusTransitionException(status, ProjectStatus.ACTIVE);
+        }
+        this.status = ProjectStatus.ACTIVE;
+    }
+
+    public void complete(LocalDate actualEndDate) {
+        if (status != ProjectStatus.ACTIVE) {
+            throw new InvalidStatusTransitionException(status, ProjectStatus.COMPLETED);
+        }
+        this.status = ProjectStatus.COMPLETED;
+        this.actualEndDate = actualEndDate;
+    }
+
+    public void cancel() {
+        if (status == ProjectStatus.COMPLETED || status == ProjectStatus.CANCELED) {
+           throw new InvalidStatusTransitionException(status, ProjectStatus.CANCELED);
+        }
+        this.status = ProjectStatus.CANCELED;
+    }
+
     //getters
     public Long getId() { return id; }
     public String getName() { return name; }
@@ -80,7 +118,4 @@ public class Project {
     public void setName(String name) { this.name = name; }
     public void setDescription(String description) { this.description = description; }
     public void setBudget(BigDecimal budget) { this.budget = budget; }
-    public void setActualStartDate(LocalDate actualStartDate) { this.actualStartDate = actualStartDate; }
-    public void setActualEndDate(LocalDate actualEndDate) { this.actualEndDate = actualEndDate; }
-    public void setStatus(ProjectStatus status) { this.status = status; }
 }
